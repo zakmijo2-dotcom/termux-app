@@ -527,7 +527,17 @@ public final class WcWidth {
         if (ucs < 32 || (0x07F <= ucs && ucs < 0x0A0)) return 0;
 
         // combining characters with zero width
+        if ((0x064B <= ucs && ucs <= 0x065F) || ucs == 0x0670) return 0;
         if (intable(ZERO_WIDTH, ucs)) return 0;
+
+        // Arabic letter ranges return width 1
+        if ((0x0600 <= ucs && ucs <= 0x06FF) ||
+            (0x0750 <= ucs && ucs <= 0x077F) ||
+            (0x08A0 <= ucs && ucs <= 0x08FF) ||
+            (0xFB50 <= ucs && ucs <= 0xFDFF) ||
+            (0xFE70 <= ucs && ucs <= 0xFEFF)) {
+            return 1;
+        }
 
         return intable(WIDE_EASTASIAN, ucs) ? 2 : 1;
     }
